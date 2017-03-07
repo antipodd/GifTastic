@@ -18,7 +18,7 @@ $(document).ready(function() {
         var pokeThumb = $("<img>");
         button.addClass("pokemon");
         button.attr("pokemon", pokemon[i]);
-        console.log(pokemon[i]);
+        //console.log(pokemon[i]);
         
         $(button).html("<p>" + pokemon[i] + "!</p>");
         //tried to access pokemon sprites from pokemon api - I wanted to add an image of the pokemon to the button, it works but very slow - would need to download all images for idea to work
@@ -44,7 +44,7 @@ $(document).ready(function() {
 
         // Here we grab the text from the input box
         var poke = $("#poke-input").val().trim();
-        console.log(poke.length);
+        //console.log(poke.length);
         if (poke.length > 0) {
         pokemon.push(poke);
 
@@ -57,7 +57,7 @@ $(document).ready(function() {
 
       $("#poke-view").on("click", ".pokemon", function() {
       	$(".poke-show").empty();
-      	console.log($(this).attr("pokemon"));
+      	//console.log($(this).attr("pokemon"));
 
       	var monster = $(this).attr("pokemon");
       	var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + monster + "&api_key=dc6zaTOxFJmzC&limit=10&rating=pg";
@@ -65,9 +65,9 @@ $(document).ready(function() {
       		url: queryURL,
       		method: "GET"
     		}).done(function(response) {
-      	  console.log(response);
+      	  //console.log(response);
       	  var results = response.data; //response.data is an array
-    	    console.log(results.length);
+    	    //console.log(results.length);
     	    for (var i = 0; i < results.length; i++) {
     		
             var rating = results[i].rating;
@@ -116,14 +116,14 @@ $(document).ready(function() {
 
       
       function clickImage() { //function defined on global scope - this would refer to window not clicked gif without using the .call() method
-        console.log(this); // expecting this to be the clicked button
-        console.log("image clicked");
+        //console.log(this); // expecting this to be the clicked button
+        //console.log("image clicked");
         var state = $(this).attr("data-state");
-        console.log(state);
-        console.log("image clicked");
-        console.log($(this).attr("data-state")); 
-        console.log($(this).attr("data-animate")); 
-        console.log($(this).attr("data-still")); 
+       // console.log(state);
+        //console.log("image clicked");
+        //console.log($(this).attr("data-state")); 
+        //console.log($(this).attr("data-animate")); 
+        //console.log($(this).attr("data-still")); 
         if ($(this).attr("data-state") === "still") {
           //console.log("trying to animate");
           $(this).attr("src", $(this).data("animate"));

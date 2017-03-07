@@ -15,11 +15,26 @@ $(document).ready(function() {
         $("#poke-view").empty();
         for (var i = 0; i < pokemon.length; i++) {
         var button = $("<button>");
+        var pokeThumb = $("<img>");
         button.addClass("pokemon");
         button.attr("pokemon", pokemon[i]);
         console.log(pokemon[i]);
-        button.text(pokemon[i]);
-        $("#poke-view").append(button.text(pokemon[i]));
+        
+        $(button).html("<p>" + pokemon[i] + "!</p>");
+        //tried to access pokemon sprites from pokemon api - I wanted to add an image of the pokemon to the button, it works but very slow - would need to download all images for idea to work
+        /*var queryURL = "http://pokeapi.co/api/v2/pokemon/" + pokemon[i].toLowerCase();
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).done(function(response) {
+          console.log(response);
+          
+          pokeThumb.attr("src", response.sprites.front_default);
+          
+          
+          });
+        $(button).prepend(pokeThumb);*/
+        $("#poke-view").append(button);
         }
       }
 
@@ -29,9 +44,15 @@ $(document).ready(function() {
 
         // Here we grab the text from the input box
         var poke = $("#poke-input").val().trim();
+        console.log(poke.length);
+        if (poke.length > 0) {
         pokemon.push(poke);
 
         renderButtons();
+        } else {
+          alert("Input field is empty");
+        }
+        $("#poke-input").val(""); //empty form on submit
       });
 
       $("#poke-view").on("click", ".pokemon", function() {
@@ -59,10 +80,12 @@ $(document).ready(function() {
           //console.log(pokeImage.attr("animate"));
        
             var pokeDiv = $("<div>");
+            pokeDiv.addClass("display-div")
     		    pokeImage.addClass("gif");
-            $(".poke-show").append(p);
+            $(pokeDiv).append(p).append(pokeImage);
+
     		  //$("#poke-show").append("<img src=" + response.data[i].images.fixed_height.url + ">");
-            $(".poke-show").append(pokeImage);
+            $(".poke-show").append(pokeDiv);
     	    }
         });
 
@@ -72,7 +95,7 @@ $(document).ready(function() {
     }); //end click pokemon button
 
       $(".poke-show").on("click", ".gif", function() {
-        var state = $(this).attr("data-state");
+        /*var state = $(this).attr("data-state");
         //console.log(state);
         console.log("image clicked");
         console.log($(this).attr("data-state")); 
@@ -85,11 +108,15 @@ $(document).ready(function() {
         } else {
           $(this).attr("src", $(this).attr("data-still"));
           $(this).attr("data-state", "still");
-        } 
-        //clickImage();
+        } */
+        clickImage.call(this); //sets this to the gif that is clicked (Thanks Brian!)
       });
 
-      function clickImage() {
+
+
+      
+      function clickImage() { //function defined on global scope - this would refer to window not clicked gif without using the .call() method
+        console.log(this); // expecting this to be the clicked button
         console.log("image clicked");
         var state = $(this).attr("data-state");
         console.log(state);
@@ -99,10 +126,10 @@ $(document).ready(function() {
         console.log($(this).attr("data-still")); 
         if ($(this).attr("data-state") === "still") {
           //console.log("trying to animate");
-          $(this).attr("src", $(this).attr("data-animate"));
+          $(this).attr("src", $(this).data("animate"));
           $(this).attr("data-state", "animate");
         } else {
-          $(this).attr("src", $(this).attr("data-still"));
+          $(this).attr("src", $(this).data("still"));
           $(this).attr("data-state", "still");
         } 
       }

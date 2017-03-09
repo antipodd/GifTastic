@@ -6,36 +6,40 @@ $(document).ready(function() {
     });*/
 
 // Initial array of movies
-      var pokemon = ["Bulbasaur", "Charmander", "Squirtle", "Pikachu"];
+      var pokemon = ["bulbasaur", "charmander", "squirtle", "pikachu"];
       
-      // Function for displaying movie data
+      // Function for  movie data
       function renderButtons() {
 
         // YOUR CODE GOES HERE
         $("#poke-view").empty();
         for (var i = 0; i < pokemon.length; i++) {
-        var button = $("<button>");
-        var pokeThumb = $("<img>");
-        button.addClass("pokemon");
-        button.attr("pokemon", pokemon[i]);
-        //console.log(pokemon[i]);
-        
-        button.html("<p>" + pokemon[i] + "!</p>");
-        //tried to access pokemon sprites from pokemon api - I wanted to add an image of the pokemon to the button, it works but very slow - would need to download all images for idea to work
-        //the file javascript2.js contains a way around this and shows the general idea of what I was planning to do, thanks to Brian for the help
-        /*var queryURL = "http://pokeapi.co/api/v2/pokemon/" + pokemon[i].toLowerCase();
-        $.ajax({
-          url: queryURL,
-          method: "GET"
-        }).done(function(response) {
-          console.log(response);
+          var button = $("<button>");
+          var pokeThumb = $("<img data-pkmn='"+pokemon[i]+"'>");
+          button.addClass("pokemon");
+          button.attr("pokemon", pokemon[i]);
+          button.html("<p>" + pokemon[i] + "!</p>");
+          button.prepend(pokeThumb);
+          $("#poke-view").append(button);
+          //console.log(pokemon[i]);
           
-          pokeThumb.attr("src", response.sprites.front_default);
-          
-          
+          //tried to access pokemon sprites from pokemon api - I wanted to add an image of the pokemon to the button, it works but very slow - would need to download all images for idea to work
+          var queryURL = "http://pokeapi.co/api/v2/pokemon/" + pokemon[i].toLowerCase();
+          $.ajax({
+            url: queryURL,
+            method: "GET"
+          }).done(function(response) {
+            console.log(response);
+            console.log(response.name);
+
+            $('img[data-pkmn='+response.name+']').attr("src", response.sprites.front_default);
+           
+          }).error(function(error) {
+            
           });
-        $(button).prepend(pokeThumb);*/
-        $("#poke-view").append(button);
+
+
+
         }
       }
 
@@ -83,7 +87,7 @@ $(document).ready(function() {
             var pokeDiv = $("<div>");
             pokeDiv.addClass("display-div")
     		    pokeImage.addClass("gif");
-            pokeDiv.append(p).append(pokeImage);
+            $(pokeDiv).append(p).append(pokeImage);
 
     		  //$("#poke-show").append("<img src=" + response.data[i].images.fixed_height.url + ">");
             $(".poke-show").append(pokeDiv);
